@@ -1,38 +1,23 @@
 {% extends 'reservations/base.html' %}
 {% block title %}PNR {{ booking.pnr }}{% endblock %}
 {% block content %}
-<section class="page-intro compact">
-    <p class="eyebrow">PNR {{ booking.pnr }}</p>
+<section class="page-intro compact radar-intro">
+    <p class="eyebrow">Live PNR Radar · {{ booking.pnr }}</p>
     <h1>{{ booking.passenger_name }} · {{ booking.flight.origin }} to {{ booking.flight.destination }}</h1>
     <p>{{ booking.flight.flight_no }} · Seat {{ booking.seat.code }} · Total ₹{{ booking.total_amount }} · {% if booking.payment %}{{ booking.payment.get_status_display }}{% endif %}</p>
 </section>
 
 <section class="status-board">
-    <div class="status-tile">
-        <span>Flight Status</span>
-        <strong>{{ booking.flight.get_status_display }}</strong>
-        <small>Gate {{ booking.flight.gate }} · Delay {{ booking.flight.delay_minutes }} min</small>
-    </div>
-    <div class="status-tile">
-        <span>Document Check</span>
-        <strong>{{ booking.get_document_status_display }}</strong>
-        <small>Basic C&D check status</small>
-    </div>
-    <div class="status-tile">
-        <span>Check-in</span>
-        <strong>{% if booking.checked_in %}Completed{% elif booking.flight.checkin_open %}Open{% else %}Not Open{% endif %}</strong>
-        <small>Live passenger readiness</small>
-    </div>
-    <div class="status-tile accent">
-        <span>Delay Accommodation</span>
-        <strong>{{ booking.accommodation_note }}</strong>
-        <small>Auto based on delay duration</small>
-    </div>
+    <div class="status-tile"><span>Flight Status</span><strong>{{ booking.flight.get_status_display }}</strong><small>Gate {{ booking.flight.gate }} · Delay {{ booking.flight.delay_minutes }} min</small></div>
+    <div class="status-tile"><span>Document Check</span><strong>{{ booking.get_document_status_display }}</strong><small>Basic C&D check status</small></div>
+    <div class="status-tile"><span>Check-in</span><strong>{% if booking.checked_in %}Completed{% elif booking.flight.checkin_open %}Open{% else %}Not Open{% endif %}</strong><small>Live passenger readiness</small></div>
+    <div class="status-tile accent"><span>Delay Accommodation</span><strong>{{ booking.accommodation_note }}</strong><small>Auto based on delay duration</small></div>
 </section>
 
 <section class="split-layout">
     <div class="panel action-panel">
         <h2>Passenger actions</h2>
+        <p class="muted-copy">These buttons update database-backed C&D and check-in events so the tracking page behaves like a live operations screen.</p>
         <form method="post" class="action-row">
             {% csrf_token %}
             <button class="btn ghost" name="action" value="submit_docs" type="submit">Submit Documents</button>
@@ -40,7 +25,7 @@
             <button class="btn primary" name="action" value="check_in" type="submit">Complete Check-in</button>
         </form>
     </div>
-    <div class="panel">
+    <div class="panel event-panel">
         <h2>Live C&D event log</h2>
         <div class="timeline">
             {% for event in events %}

@@ -1,0 +1,81 @@
+{% extends 'reservations/base.html' %}
+{% block title %}Control Tower{% endblock %}
+{% block content %}
+<section class="page-intro compact control-heading">
+    <p class="eyebrow">Control Tower</p>
+    <h1>Add live data without editing code.</h1>
+    <p>This is the custom admin-style panel for lab demo operations. Add cities, create new flights with full seat maps, publish coupons, and generate sample bookings.</p>
+</section>
+
+<section class="control-grid">
+    <form method="post" class="panel control-card">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_city">
+        <p class="eyebrow">Airport Network</p>
+        <h2>Add City</h2>
+        <label>City Name<input name="name" placeholder="Ahmedabad" required></label>
+        <label>Airport Code<input name="airport_code" placeholder="AMD" maxlength="6" required></label>
+        <label>Airport Name<input name="airport_name" placeholder="Sardar Vallabhbhai Patel International Airport" required></label>
+        <label>Country<input name="country" value="India" required></label>
+        <button class="btn primary full" type="submit">Save City</button>
+    </form>
+
+    <form method="post" class="panel control-card">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_coupon">
+        <p class="eyebrow">Fare Engine</p>
+        <h2>Add Coupon</h2>
+        <label>Code<input name="code" placeholder="STUDENT15" required></label>
+        <label>Description<input name="description" placeholder="Student fare discount" required></label>
+        <label>Discount Type<select name="discount_type"><option value="PERCENT">Percent</option><option value="FLAT">Flat</option></select></label>
+        <label>Value<input name="value" type="number" step="0.01" placeholder="15" required></label>
+        <button class="btn primary full" type="submit">Publish Coupon</button>
+    </form>
+
+    <form method="post" class="panel control-card wide-card">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_flight">
+        <p class="eyebrow">Route Scheduler</p>
+        <h2>Create Flight + Seat Map</h2>
+        <div class="form-grid-two">
+            <label>Flight No<input name="flight_no" placeholder="SKY955" required></label>
+            <label>Airline<input name="airline" value="AeroMitra Express" required></label>
+            <label>Origin<select name="origin_city">{% for city in cities %}<option value="{{ city.id }}">{{ city.name }} ({{ city.airport_code }})</option>{% endfor %}</select></label>
+            <label>Destination<select name="destination_city">{% for city in cities %}<option value="{{ city.id }}">{{ city.name }} ({{ city.airport_code }})</option>{% endfor %}</select></label>
+            <label>Depart In Hours<input name="hours_from_now" type="number" value="12" min="1"></label>
+            <label>Duration Hours<input name="duration_hours" type="number" value="2" min="1"></label>
+            <label>Base Price<input name="base_price" type="number" value="4500" min="1"></label>
+            <label>Gate<input name="gate" value="K1"></label>
+            <label>Status<select name="status">{% for value, label in statuses %}<option value="{{ value }}">{{ label }}</option>{% endfor %}</select></label>
+            <label>Delay Minutes<input name="delay_minutes" type="number" value="0" min="0"></label>
+        </div>
+        <button class="btn primary full" type="submit">Launch Flight</button>
+    </form>
+
+    <form method="post" class="panel control-card">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="sample_booking">
+        <p class="eyebrow">Demo Generator</p>
+        <h2>Create Sample Booking</h2>
+        <label>Flight<select name="flight_id">{% for flight in flights %}<option value="{{ flight.id }}">{{ flight.flight_no }} · {{ flight.origin }} to {{ flight.destination }}</option>{% endfor %}</select></label>
+        <label>Passenger<input name="passenger_name" value="Lab Demo Passenger" required></label>
+        <label>Email<input name="email" type="email" value="lab.demo.passenger@example.com" required></label>
+        <label>Phone<input name="phone" value="9999999999" required></label>
+        <label>Coupon Code<input name="coupon_code" placeholder="LAB10"></label>
+        <button class="btn primary full" type="submit">Generate Booking + PNR</button>
+    </form>
+</section>
+
+<section class="split-layout control-lists">
+    <div class="panel">
+        <h2>Current cities</h2>
+        <div class="pill-cloud">{% for city in cities %}<span>{{ city.name }} · {{ city.airport_code }}</span>{% endfor %}</div>
+    </div>
+    <div class="panel dark-panel">
+        <h2>Latest bookings</h2>
+        {% for booking in bookings %}
+            <a class="recent-pnr" href="{% url 'track_booking' booking.pnr %}"><strong>{{ booking.pnr }}</strong><span>{{ booking.passenger_name }} · {{ booking.flight.flight_no }}</span></a>
+        {% empty %}<p>No bookings yet.</p>{% endfor %}
+    </div>
+</section>
+{% endblock %}

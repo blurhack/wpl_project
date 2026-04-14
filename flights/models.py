@@ -4,6 +4,21 @@ from django.db import models
 from django.utils import timezone
 
 
+class City(models.Model):
+    name = models.CharField(max_length=80, unique=True)
+    airport_code = models.CharField(max_length=6, unique=True)
+    airport_name = models.CharField(max_length=120)
+    country = models.CharField(max_length=80, default='India')
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'Cities'
+
+    def __str__(self):
+        return f'{self.name} ({self.airport_code})'
+
+
 class Aircraft(models.Model):
     tail_number = models.CharField(max_length=20, unique=True)
     model = models.CharField(max_length=80)
@@ -59,6 +74,10 @@ class Flight(models.Model):
     @property
     def seats_left(self):
         return max(self.seats_total - self.seats_booked, 0)
+
+    @property
+    def load_factor(self):
+        return int((self.seats_booked / max(self.seats_total, 1)) * 100)
 
     @property
     def dynamic_price(self):

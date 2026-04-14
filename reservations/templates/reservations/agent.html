@@ -1,14 +1,14 @@
 {% extends 'reservations/base.html' %}
 {% block title %}Agent Booking Desk{% endblock %}
 {% block content %}
-<section class="page-intro compact">
+<section class="page-intro compact agent-heading">
     <p class="eyebrow">Agent Desk</p>
-    <h1>Book tickets for walk-in passengers.</h1>
-    <p>Agent mode stores the travel desk name with each PNR and supports the same live seat and fare system.</p>
+    <h1>Counter-style staff booking console.</h1>
+    <p>Agent mode stores travel desk information with the PNR, creates payment records, and uses the same live seat inventory as passenger booking.</p>
 </section>
 
 <section class="split-layout">
-    <div class="panel">
+    <div class="panel ops-panel">
         <h2>Flights open for agent booking</h2>
         <div class="list-stack">
             {% for flight in flights %}
@@ -20,15 +20,14 @@
         </div>
     </div>
     <div class="panel dark-panel">
-        <h2>Recent agent PNRs</h2>
-        {% for booking in recent %}
-            <a class="recent-pnr" href="{% url 'track_booking' booking.pnr %}">
-                <strong>{{ booking.pnr }}</strong>
-                <span>{{ booking.passenger_name }} · {{ booking.agent_name }}</span>
-            </a>
-        {% empty %}
-            <p>No agent bookings yet.</p>
+        <h2>Active staff desks</h2>
+        {% for agent in agents %}
+            <div class="recent-pnr"><strong>{{ agent.employee_code }}</strong><span>{{ agent.name }} · {{ agent.desk }}</span></div>
         {% endfor %}
+        <h2 class="mt-4">Recent agent PNRs</h2>
+        {% for booking in recent %}
+            <a class="recent-pnr" href="{% url 'track_booking' booking.pnr %}"><strong>{{ booking.pnr }}</strong><span>{{ booking.passenger_name }} · {{ booking.agent_name }}</span></a>
+        {% empty %}<p>No agent bookings yet.</p>{% endfor %}
     </div>
 </section>
 {% endblock %}

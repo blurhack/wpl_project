@@ -1,21 +1,22 @@
 {% extends 'reservations/base.html' %}
 {% block title %}Operations Dashboard{% endblock %}
 {% block content %}
-<section class="page-intro compact">
+<section class="page-intro compact ops-heading">
     <p class="eyebrow">Operations Dashboard</p>
-    <h1>Database-backed airline control panel.</h1>
-    <p>Quick view of routes, aircraft, bookings, revenue, agents, delays, and recent reservation activity.</p>
+    <h1>Airline database control room.</h1>
+    <p>Routes, fleet, cities, bookings, revenue, agents, coupons and delay accommodation are all pulled from the Django database.</p>
+    <a class="btn primary" href="{% url 'control_tower' %}">Add Data in Control Tower</a>
 </section>
 
 <section class="status-board dashboard-board">
     <div class="status-tile"><span>Flights</span><strong>{{ flight_count }}</strong><small>Routes and schedules</small></div>
-    <div class="status-tile"><span>Aircraft</span><strong>{{ aircraft_count }}</strong><small>Registered fleet</small></div>
+    <div class="status-tile"><span>Cities</span><strong>{{ city_count }}</strong><small>Airport network</small></div>
     <div class="status-tile"><span>Bookings</span><strong>{{ booking_count }}</strong><small>Confirmed reservations</small></div>
     <div class="status-tile accent"><span>Revenue</span><strong>₹{{ revenue }}</strong><small>Demo paid bookings</small></div>
 </section>
 
 <section class="split-layout">
-    <div class="panel">
+    <div class="panel ops-panel">
         <h2>Recent bookings</h2>
         <div class="list-stack">
             {% for booking in recent_bookings %}
@@ -38,7 +39,16 @@
         {% empty %}
             <p>No active delay accommodation alerts.</p>
         {% endfor %}
-        <div class="mini-stat">Active agents: {{ agent_count }}</div>
+        <div class="mini-stat">Active agents: {{ agent_count }} · Aircraft: {{ aircraft_count }}</div>
+    </div>
+</section>
+
+<section class="panel coupon-console">
+    <h2>Active coupon console</h2>
+    <div class="coupon-grid">
+        {% for coupon in coupons %}
+            <div class="coupon-card"><strong>{{ coupon.code }}</strong><span>{{ coupon.description }}</span></div>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}

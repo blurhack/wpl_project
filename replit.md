@@ -2,14 +2,14 @@
 
 ## Overview
 
-Django 4.2 airline management and reservation mini-project for a lab demo, alongside the original pnpm workspace scaffolding. The Django app is the primary user-facing project and runs from `manage.py` on port 5000.
+Django 4.2 airline management and reservation mini-project for a lab demo. The Django app is the primary user-facing project and runs from `manage.py` on port 5000.
 
 ## Django Airline System
 
 - **Project**: `airline_manager`
 - **Apps**:
   - `accounts` — Passenger/user records
-  - `flights` — Aircraft, routes, schedules, flight search, dashboard seed data
+  - `flights` — City, aircraft, route, schedule, flight search, dashboard and Control Tower data entry
   - `seats` — Seat map and cabin pricing modifiers
   - `bookings` — Reservations, coupons, payments, dynamic pricing signals
   - `tracking` — Live C&D/check-in/gate event log
@@ -19,8 +19,9 @@ Django 4.2 airline management and reservation mini-project for a lab demo, along
 - **Database**: SQLite by default (`db.sqlite3`, generated locally); settings include environment hooks for PostgreSQL-style DB variables.
 - **Async stack**: Celery configured in `airline_manager/celery.py` with Redis URL support through `REDIS_URL`; eager execution is enabled by default for the lab preview so the app works without a separate worker.
 - **Key features**:
-  - Flight listing and search
+  - Flight listing and city/route search
   - Operations dashboard
+  - Custom Control Tower at `/control-tower/` for adding cities, coupons, flights with generated seat maps, and sample bookings
   - Dynamic fare calculation through booking signals
   - Visual seat selection with economy, premium, and business pricing
   - Passenger and agent-assisted booking flows
@@ -28,6 +29,7 @@ Django 4.2 airline management and reservation mini-project for a lab demo, along
   - Delay accommodation alerts for meal, hotel, and rebooking support
   - Coupon chatbot using database FAQ rows and stored chat messages
   - Custom Django admin labels and registered model admin panels
+- **Seed data**: `flights.seed.ensure_seed_data()` creates cities, aircraft, routes, seats, coupons, agents, FAQ entries, delay alerts, and sample bookings. It is called from the main views so the lab demo stays populated.
 
 ## Key Commands
 

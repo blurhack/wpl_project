@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}AeroMitra{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'reservations/styles.css' %}">
 </head>
 <body>
@@ -16,10 +17,11 @@
         <div class="navlinks">
             <a href="{% url 'home' %}">Flights</a>
             <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'control_tower' %}">Control Tower</a>
             <a href="{% url 'agent_booking' %}">Agent Desk</a>
             <a href="{% url 'track_search' %}">Live Tracking</a>
             <a href="{% url 'chatbot' %}">Coupon Bot</a>
-            <a href="/admin/">Admin</a>
+            <a href="/admin/">Django Admin</a>
         </div>
     </nav>
 

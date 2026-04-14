@@ -1,58 +1,63 @@
 {% extends 'reservations/base.html' %}
-{% block title %}AeroMitra Flights{% endblock %}
+{% block title %}AeroMitra Live Airline OS{% endblock %}
 {% block content %}
-<section class="hero">
+<section class="hero command-hero">
     <div>
-        <p class="eyebrow">Django Lab Mini Project</p>
-        <h1>Airline reservation system with smart booking controls.</h1>
-        <p class="hero-copy">Book flights with dynamic pricing, visual seat selection, coupon support, live passenger checks, and delay accommodation updates.</p>
+        <p class="eyebrow">Django Airline Operations System</p>
+        <h1>Live airline booking cockpit for routes, seats, coupons and passenger checks.</h1>
+        <p class="hero-copy">AeroMitra now behaves like a real reservation application: city data, dynamic fares, real seat inventory, database coupons, agent bookings, delay care, payment records, and C&D tracking all connect together.</p>
         <div class="hero-actions">
-            <a class="btn primary" href="#flights">Book a Flight</a>
+            <a class="btn primary" href="#flights">Open Flight Board</a>
+            <a class="btn ghost" href="{% url 'control_tower' %}">Manage Data</a>
             <a class="btn ghost" href="{% url 'track_search' %}">Track PNR</a>
         </div>
     </div>
-    <aside class="hero-card">
-        <span>Live Demo Includes</span>
-        <strong>Seat map + dynamic fare + PNR tracking</strong>
-        <p>Built for a lab evaluation with Django models, views, templates, SQLite data, and a non-template UI.</p>
+    <aside class="hero-card tower-card">
+        <span>Real-time Demo Pulse</span>
+        <strong>{{ live_booking_count }} bookings · {{ delayed_count }} delay alerts</strong>
+        <p>Every important feature uses the database: bookings, coupons, cities, flights, seat inventory, chat FAQ, payments, and C&D logs.</p>
     </aside>
 </section>
 
-<section class="tool-strip">
+<section class="tool-strip glass-strip">
     <form method="get" class="search-panel">
-        <input name="origin" placeholder="Origin" value="{{ request.GET.origin }}">
-        <input name="destination" placeholder="Destination" value="{{ request.GET.destination }}">
+        <input name="origin" list="cityList" placeholder="Origin city" value="{{ request.GET.origin }}">
+        <input name="destination" list="cityList" placeholder="Destination city" value="{{ request.GET.destination }}">
         <input name="q" placeholder="Flight no / airline" value="{{ request.GET.q }}">
-        <button class="btn primary" type="submit">Search</button>
+        <button class="btn primary" type="submit">Search Board</button>
     </form>
+    <datalist id="cityList">
+        {% for city in cities %}<option value="{{ city.name }}">{{ city.airport_code }}</option>{% endfor %}
+    </datalist>
     <div class="coupon-stack">
         {% for coupon in coupons %}
-            <span>{{ coupon.code }} — {{ coupon.description }}</span>
+            <span>{{ coupon.code }} · {{ coupon.description }}</span>
         {% endfor %}
     </div>
 </section>
 
-<section id="flights" class="section-head">
-    <p class="eyebrow">Available Flights</p>
+<section id="flights" class="section-head flight-board-head">
+    <p class="eyebrow">Live Flight Board</p>
     <h2>Choose your route</h2>
 </section>
 
-<section class="flight-grid">
+<section class="flight-grid runway-grid">
     {% for flight in flights %}
-        <article class="flight-card">
+        <article class="flight-card runway-card">
             <div class="card-topline">
                 <span class="flight-no">{{ flight.flight_no }}</span>
                 <span class="status {{ flight.status|lower }}">{{ flight.get_status_display }}</span>
             </div>
             <h3>{{ flight.origin }} <span>to</span> {{ flight.destination }}</h3>
-            <p class="airline">{{ flight.airline }} · Gate {{ flight.gate }}</p>
+            <p class="airline">{{ flight.airline }} · {{ flight.aircraft.model }} · Gate {{ flight.gate }}</p>
             <div class="flight-meta">
                 <div><small>Departure</small><strong>{{ flight.depart_at|date:"M d, H:i" }}</strong></div>
-                <div><small>Seats left</small><strong>{{ flight.seats_left }}</strong></div>
-                <div><small>Current fare</small><strong>₹{{ flight.dynamic_price }}</strong></div>
+                <div><small>Seats left</small><strong>{{ flight.seats_left }}/{{ flight.seats_total }}</strong></div>
+                <div><small>Live fare</small><strong>₹{{ flight.dynamic_price }}</strong></div>
             </div>
+            <div class="load-meter"><span style="width: {{ flight.load_factor }}%"></span></div>
             <p class="delay-note">{{ flight.delay_support }}</p>
-            <a class="btn full" href="{% url 'flight_detail' flight.id %}">Select Seat</a>
+            <a class="btn full" href="{% url 'flight_detail' flight.id %}">Open Seat Map</a>
         </article>
     {% empty %}
         <div class="empty-state">No flights match your search.</div>
