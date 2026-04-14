@@ -1,0 +1,44 @@
+{% extends 'reservations/base.html' %}
+{% block title %}Operations Dashboard{% endblock %}
+{% block content %}
+<section class="page-intro compact">
+    <p class="eyebrow">Operations Dashboard</p>
+    <h1>Database-backed airline control panel.</h1>
+    <p>Quick view of routes, aircraft, bookings, revenue, agents, delays, and recent reservation activity.</p>
+</section>
+
+<section class="status-board dashboard-board">
+    <div class="status-tile"><span>Flights</span><strong>{{ flight_count }}</strong><small>Routes and schedules</small></div>
+    <div class="status-tile"><span>Aircraft</span><strong>{{ aircraft_count }}</strong><small>Registered fleet</small></div>
+    <div class="status-tile"><span>Bookings</span><strong>{{ booking_count }}</strong><small>Confirmed reservations</small></div>
+    <div class="status-tile accent"><span>Revenue</span><strong>₹{{ revenue }}</strong><small>Demo paid bookings</small></div>
+</section>
+
+<section class="split-layout">
+    <div class="panel">
+        <h2>Recent bookings</h2>
+        <div class="list-stack">
+            {% for booking in recent_bookings %}
+                <a class="agent-row" href="{% url 'track_booking' booking.pnr %}">
+                    <span>{{ booking.pnr }} · {{ booking.passenger_name }} · {{ booking.flight.flight_no }}</span>
+                    <strong>₹{{ booking.total_amount }}</strong>
+                </a>
+            {% empty %}
+                <p>No bookings yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="panel dark-panel">
+        <h2>Delay accommodation queue</h2>
+        {% for flight in delayed_flights %}
+            <div class="recent-pnr">
+                <strong>{{ flight.flight_no }} · {{ flight.delay_minutes }} min</strong>
+                <span>{{ flight.delay_support }}</span>
+            </div>
+        {% empty %}
+            <p>No active delay accommodation alerts.</p>
+        {% endfor %}
+        <div class="mini-stat">Active agents: {{ agent_count }}</div>
+    </div>
+</section>
+{% endblock %}

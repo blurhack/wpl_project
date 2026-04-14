@@ -4,7 +4,7 @@
 <section class="page-intro compact">
     <p class="eyebrow">PNR {{ booking.pnr }}</p>
     <h1>{{ booking.passenger_name }} · {{ booking.flight.origin }} to {{ booking.flight.destination }}</h1>
-    <p>{{ booking.flight.flight_no }} · Seat {{ booking.seat.code }} · Total ₹{{ booking.total_amount }}</p>
+    <p>{{ booking.flight.flight_no }} · Seat {{ booking.seat.code }} · Total ₹{{ booking.total_amount }} · {% if booking.payment %}{{ booking.payment.get_status_display }}{% endif %}</p>
 </section>
 
 <section class="status-board">
@@ -30,13 +30,29 @@
     </div>
 </section>
 
-<section class="panel action-panel">
-    <h2>Passenger actions</h2>
-    <form method="post" class="action-row">
-        {% csrf_token %}
-        <button class="btn ghost" name="action" value="submit_docs" type="submit">Submit Documents</button>
-        <button class="btn ghost" name="action" value="clear_docs" type="submit">Clear Document Check</button>
-        <button class="btn primary" name="action" value="check_in" type="submit">Complete Check-in</button>
-    </form>
+<section class="split-layout">
+    <div class="panel action-panel">
+        <h2>Passenger actions</h2>
+        <form method="post" class="action-row">
+            {% csrf_token %}
+            <button class="btn ghost" name="action" value="submit_docs" type="submit">Submit Documents</button>
+            <button class="btn ghost" name="action" value="clear_docs" type="submit">Clear Document Check</button>
+            <button class="btn primary" name="action" value="check_in" type="submit">Complete Check-in</button>
+        </form>
+    </div>
+    <div class="panel">
+        <h2>Live C&D event log</h2>
+        <div class="timeline">
+            {% for event in events %}
+                <div class="timeline-item">
+                    <strong>{{ event.get_event_type_display }} · {{ event.status }}</strong>
+                    <span>{{ event.note }}</span>
+                    <small>{{ event.created_at|date:"M d, H:i" }}</small>
+                </div>
+            {% empty %}
+                <p>No tracking events yet.</p>
+            {% endfor %}
+        </div>
+    </div>
 </section>
 {% endblock %}
