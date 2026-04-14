@@ -1,0 +1,23 @@
+{% extends 'reservations/base.html' %}
+{% block title %}Coupon Bot{% endblock %}
+{% block content %}
+<section class="chat-shell">
+    <div class="chat-intro">
+        <p class="eyebrow">Coupon Chatbot</p>
+        <h1>AeroBot answers booking questions instantly.</h1>
+        <p>Ask about coupons, delay accommodation, seats, agent booking, or check-in/document checks.</p>
+    </div>
+    <div class="chat-panel">
+        <div class="chat-window">
+            {% for item in chat %}
+                <div class="bubble {{ item.role }}">{{ item.text }}</div>
+            {% endfor %}
+        </div>
+        <form method="post" class="chat-form">
+            {% csrf_token %}
+            <input name="message" placeholder="Ask: Which coupon can I use?" autocomplete="off" required>
+            <button class="btn primary" type="submit">Send</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

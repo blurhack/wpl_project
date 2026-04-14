@@ -1,0 +1,42 @@
+{% extends 'reservations/base.html' %}
+{% block title %}PNR {{ booking.pnr }}{% endblock %}
+{% block content %}
+<section class="page-intro compact">
+    <p class="eyebrow">PNR {{ booking.pnr }}</p>
+    <h1>{{ booking.passenger_name }} · {{ booking.flight.origin }} to {{ booking.flight.destination }}</h1>
+    <p>{{ booking.flight.flight_no }} · Seat {{ booking.seat.code }} · Total ₹{{ booking.total_amount }}</p>
+</section>
+
+<section class="status-board">
+    <div class="status-tile">
+        <span>Flight Status</span>
+        <strong>{{ booking.flight.get_status_display }}</strong>
+        <small>Gate {{ booking.flight.gate }} · Delay {{ booking.flight.delay_minutes }} min</small>
+    </div>
+    <div class="status-tile">
+        <span>Document Check</span>
+        <strong>{{ booking.get_document_status_display }}</strong>
+        <small>Basic C&D check status</small>
+    </div>
+    <div class="status-tile">
+        <span>Check-in</span>
+        <strong>{% if booking.checked_in %}Completed{% elif booking.flight.checkin_open %}Open{% else %}Not Open{% endif %}</strong>
+        <small>Live passenger readiness</small>
+    </div>
+    <div class="status-tile accent">
+        <span>Delay Accommodation</span>
+        <strong>{{ booking.accommodation_note }}</strong>
+        <small>Auto based on delay duration</small>
+    </div>
+</section>
+
+<section class="panel action-panel">
+    <h2>Passenger actions</h2>
+    <form method="post" class="action-row">
+        {% csrf_token %}
+        <button class="btn ghost" name="action" value="submit_docs" type="submit">Submit Documents</button>
+        <button class="btn ghost" name="action" value="clear_docs" type="submit">Clear Document Check</button>
+        <button class="btn primary" name="action" value="check_in" type="submit">Complete Check-in</button>
+    </form>
+</section>
+{% endblock %}

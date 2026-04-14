@@ -1,0 +1,61 @@
+{% extends 'reservations/base.html' %}
+{% block title %}AeroMitra Flights{% endblock %}
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Django Lab Mini Project</p>
+        <h1>Airline reservation system with smart booking controls.</h1>
+        <p class="hero-copy">Book flights with dynamic pricing, visual seat selection, coupon support, live passenger checks, and delay accommodation updates.</p>
+        <div class="hero-actions">
+            <a class="btn primary" href="#flights">Book a Flight</a>
+            <a class="btn ghost" href="{% url 'track_search' %}">Track PNR</a>
+        </div>
+    </div>
+    <aside class="hero-card">
+        <span>Live Demo Includes</span>
+        <strong>Seat map + dynamic fare + PNR tracking</strong>
+        <p>Built for a lab evaluation with Django models, views, templates, SQLite data, and a non-template UI.</p>
+    </aside>
+</section>
+
+<section class="tool-strip">
+    <form method="get" class="search-panel">
+        <input name="origin" placeholder="Origin" value="{{ request.GET.origin }}">
+        <input name="destination" placeholder="Destination" value="{{ request.GET.destination }}">
+        <input name="q" placeholder="Flight no / airline" value="{{ request.GET.q }}">
+        <button class="btn primary" type="submit">Search</button>
+    </form>
+    <div class="coupon-stack">
+        {% for coupon in coupons %}
+            <span>{{ coupon.code }} — {{ coupon.description }}</span>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="flights" class="section-head">
+    <p class="eyebrow">Available Flights</p>
+    <h2>Choose your route</h2>
+</section>
+
+<section class="flight-grid">
+    {% for flight in flights %}
+        <article class="flight-card">
+            <div class="card-topline">
+                <span class="flight-no">{{ flight.flight_no }}</span>
+                <span class="status {{ flight.status|lower }}">{{ flight.get_status_display }}</span>
+            </div>
+            <h3>{{ flight.origin }} <span>to</span> {{ flight.destination }}</h3>
+            <p class="airline">{{ flight.airline }} · Gate {{ flight.gate }}</p>
+            <div class="flight-meta">
+                <div><small>Departure</small><strong>{{ flight.depart_at|date:"M d, H:i" }}</strong></div>
+                <div><small>Seats left</small><strong>{{ flight.seats_left }}</strong></div>
+                <div><small>Current fare</small><strong>₹{{ flight.dynamic_price }}</strong></div>
+            </div>
+            <p class="delay-note">{{ flight.delay_support }}</p>
+            <a class="btn full" href="{% url 'flight_detail' flight.id %}">Select Seat</a>
+        </article>
+    {% empty %}
+        <div class="empty-state">No flights match your search.</div>
+    {% endfor %}
+</section>
+{% endblock %}

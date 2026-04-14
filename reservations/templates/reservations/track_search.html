@@ -1,0 +1,15 @@
+{% extends 'reservations/base.html' %}
+{% block title %}Track PNR{% endblock %}
+{% block content %}
+<section class="track-hero">
+    <div class="panel track-card">
+        <p class="eyebrow">Live Tracking</p>
+        <h1>Enter your PNR to view check-in, document check, gate and delay support.</h1>
+        <form method="post" class="track-form">
+            {% csrf_token %}
+            <input name="pnr" placeholder="Example: AB12CD" required>
+            <button class="btn primary" type="submit">Track Booking</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

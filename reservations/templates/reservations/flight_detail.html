@@ -1,0 +1,97 @@
+{% extends 'reservations/base.html' %}
+{% block title %}Book {{ flight.flight_no }}{% endblock %}
+{% block content %}
+<section class="booking-shell">
+    <div class="flight-summary-panel">
+        <p class="eyebrow">{{ flight.airline }}</p>
+        <h1>{{ flight.origin }} to {{ flight.destination }}</h1>
+        <div class="summary-grid">
+            <div><small>Flight</small><strong>{{ flight.flight_no }}</strong></div>
+            <div><small>Status</small><strong>{{ flight.get_status_display }}</strong></div>
+            <div><small>Gate</small><strong>{{ flight.gate }}</strong></div>
+            <div><small>Base dynamic fare</small><strong id="baseFare" data-price="{{ flight.dynamic_price }}">₹{{ flight.dynamic_price }}</strong></div>
+        </div>
+        <p class="delay-note large">{{ flight.delay_support }}</p>
+    </div>
+
+    <form method="post" class="booking-form" id="bookingForm">
+        {% csrf_token %}
+        <input type="hidden" name="seat_id" id="seatInput">
+        <input type="hidden" name="booking_mode" value="{{ mode }}">
+        <div class="form-card">
+            <div class="form-head">
+                <p class="eyebrow">Seat Selection</p>
+                <h2>Pick one seat</h2>
+            </div>
+            <div class="legend">
+                <span><i class="seat-dot economy"></i> Economy</span>
+                <span><i class="seat-dot premium"></i> Premium</span>
+                <span><i class="seat-dot business"></i> Business</span>
+                <span><i class="seat-dot booked"></i> Booked</span>
+            </div>
+            <div class="seat-map">
+                {% for seat in seats %}
+                    <button type="button" class="seat {{ seat.cabin|lower }} {% if seat.id in booked_seat_ids or seat.is_blocked %}booked{% endif %}" data-seat-id="{{ seat.id }}" data-code="{{ seat.code }}" data-modifier="{{ seat.price_modifier }}" {% if seat.id in booked_seat_ids or seat.is_blocked %}disabled{% endif %}>
+                        {{ seat.code }}
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-card passenger-card">
+            <div class="form-head">
+                <p class="eyebrow">Passenger Details</p>
+                <h2>{% if mode == 'AGENT' %}Agent assisted booking{% else %}Confirm your ticket{% endif %}</h2>
+            </div>
+            <label>Passenger Name<input name="passenger_name" required placeholder="Full name"></label>
+            <label>Email<input type="email" name="email" required placeholder="name@example.com"></label>
+            <label>Phone<input name="phone" required placeholder="Mobile number"></label>
+            {% if mode == 'AGENT' %}
+                <label>Agent Name<input name="agent_name" required placeholder="Travel desk agent"></label>
+            {% endif %}
+            <label>Coupon Code
+                <select name="coupon_code" id="couponSelect">
+                    <option value="" data-type="" data-value="0">No coupon</option>
+                    {% for coupon in coupons %}
+                        <option value="{{ coupon.code }}" data-type="{{ coupon.discount_type }}" data-value="{{ coupon.value }}">{{ coupon.code }} — {{ coupon.description }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <div class="fare-box">
+                <span>Selected Seat</span><strong id="selectedSeat">None</strong>
+                <span>Estimated Total</span><strong id="estimatedFare">₹{{ flight.dynamic_price }}</strong>
+            </div>
+            <button class="btn primary full" type="submit">Confirm Booking</button>
+        </div>
+    </form>
+</section>
+
+<script>
+const baseFare = Number(document.getElementById('baseFare').dataset.price);
+const seatInput = document.getElementById('seatInput');
+const selectedSeat = document.getElementById('selectedSeat');
+const estimatedFare = document.getElementById('estimatedFare');
+const couponSelect = document.getElementById('couponSelect');
+let selectedModifier = 0;
+function updateFare() {
+    let total = baseFare + selectedModifier;
+    const option = couponSelect.options[couponSelect.selectedIndex];
+    const type = option.dataset.type;
+    const value = Number(option.dataset.value || 0);
+    if (type === 'PERCENT') total = total - (total * value / 100);
+    if (type === 'FLAT') total = total - value;
+    estimatedFare.textContent = '₹' + Math.max(Math.round(total), 0);
+}
+document.querySelectorAll('.seat:not(.booked)').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelectorAll('.seat').forEach(item => item.classList.remove('selected'));
+        button.classList.add('selected');
+        seatInput.value = button.dataset.seatId;
+        selectedSeat.textContent = button.dataset.code;
+        selectedModifier = Number(button.dataset.modifier || 0);
+        updateFare();
+    });
+});
+couponSelect.addEventListener('change', updateFare);
+</script>
+{% endblock %}

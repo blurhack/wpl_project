@@ -1,0 +1,665 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+:root {
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: rgba(15, 23, 42, 0.12);
+    --paper: #fffaf2;
+    --cream: #fff6e6;
+    --navy: #101828;
+    --blue: #2663ff;
+    --teal: #0f9f8f;
+    --amber: #f59e0b;
+    --purple: #7c3aed;
+    --danger: #ef4444;
+    --shadow: 0 24px 70px rgba(15, 23, 42, 0.16);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--ink);
+    background:
+        radial-gradient(circle at top left, rgba(38, 99, 255, 0.15), transparent 30rem),
+        linear-gradient(135deg, #fffaf2 0%, #e9f3ff 48%, #fff5e2 100%);
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+main {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 30px 0 70px;
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px max(18px, calc((100vw - 1180px) / 2));
+    background: rgba(255, 250, 242, 0.78);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--line);
+}
+
+.brand,
+.navlinks {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    font-size: 1.2rem;
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 15px;
+    color: white;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    box-shadow: 0 12px 26px rgba(38, 99, 255, 0.28);
+}
+
+.navlinks a {
+    padding: 10px 12px;
+    border-radius: 999px;
+    color: #334155;
+    font-weight: 700;
+    font-size: 0.92rem;
+}
+
+.navlinks a:hover {
+    background: white;
+}
+
+.hero,
+.booking-shell,
+.chat-shell,
+.split-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 26px;
+    align-items: stretch;
+}
+
+.hero {
+    padding: 54px 0 34px;
+}
+
+.eyebrow {
+    margin: 0 0 12px;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.74rem;
+    font-weight: 800;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
+}
+
+h1 {
+    font-size: clamp(2.4rem, 6vw, 5.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.08em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    letter-spacing: -0.05em;
+}
+
+.hero-copy,
+.page-intro p,
+.chat-intro p {
+    color: #475569;
+    font-size: 1.12rem;
+    line-height: 1.7;
+    max-width: 670px;
+}
+
+.hero-actions,
+.action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn {
+    border: 0;
+    border-radius: 16px;
+    padding: 13px 18px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn.primary {
+    color: white;
+    background: linear-gradient(135deg, var(--blue), #1d4ed8);
+    box-shadow: 0 16px 35px rgba(38, 99, 255, 0.28);
+}
+
+.btn.ghost {
+    background: white;
+    border: 1px solid var(--line);
+}
+
+.btn.full {
+    width: 100%;
+}
+
+.hero-card,
+.panel,
+.form-card,
+.flight-card,
+.status-tile,
+.track-card,
+.chat-panel {
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 32px;
+    box-shadow: var(--shadow);
+}
+
+.hero-card {
+    padding: 34px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    background: linear-gradient(160deg, #101828, #163b6d 55%, #0f9f8f);
+    color: white;
+    min-height: 360px;
+}
+
+.hero-card span,
+.hero-card p {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.hero-card strong {
+    font-size: 2rem;
+    line-height: 1;
+    margin: 10px 0 16px;
+}
+
+.tool-strip,
+.search-panel,
+.coupon-stack,
+.flight-meta,
+.summary-grid,
+.status-board {
+    display: grid;
+    gap: 14px;
+}
+
+.tool-strip {
+    grid-template-columns: 1fr 0.8fr;
+    margin-bottom: 36px;
+}
+
+.search-panel {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 14px;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid var(--line);
+}
+
+input,
+select {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 13px 14px;
+    background: white;
+    color: var(--ink);
+    font: inherit;
+}
+
+label {
+    display: grid;
+    gap: 8px;
+    color: #334155;
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+.coupon-stack {
+    align-content: center;
+}
+
+.coupon-stack span {
+    background: #101828;
+    color: white;
+    border-radius: 999px;
+    padding: 9px 13px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.section-head,
+.page-intro {
+    margin: 34px 0 18px;
+}
+
+.page-intro.compact h1 {
+    max-width: 850px;
+    font-size: clamp(2rem, 4vw, 4rem);
+}
+
+.flight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+    gap: 22px;
+}
+
+.flight-card,
+.panel,
+.form-card,
+.status-tile {
+    padding: 24px;
+}
+
+.card-topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.flight-no {
+    font-weight: 900;
+    letter-spacing: -0.04em;
+}
+
+.status {
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: #dcfce7;
+    color: #166534;
+    font-size: 0.74rem;
+    font-weight: 900;
+}
+
+.status.delayed {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status.cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.flight-card h3 {
+    font-size: 1.7rem;
+    letter-spacing: -0.05em;
+    line-height: 1.05;
+}
+
+.flight-card h3 span {
+    color: var(--muted);
+    font-size: 1rem;
+}
+
+.airline,
+.delay-note,
+.status-tile small {
+    color: var(--muted);
+}
+
+.delay-note.large {
+    padding: 16px;
+    border-radius: 20px;
+    background: rgba(15, 159, 143, 0.1);
+    color: #0f766e;
+    font-weight: 800;
+}
+
+.flight-meta,
+.summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+    margin: 22px 0;
+}
+
+.flight-meta div,
+.summary-grid div,
+.fare-box {
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: rgba(255, 250, 242, 0.65);
+}
+
+small,
+.flight-meta small,
+.summary-grid small,
+.fare-box span,
+.status-tile span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+strong {
+    display: block;
+}
+
+.flight-summary-panel {
+    position: sticky;
+    top: 92px;
+    align-self: start;
+    padding: 30px;
+    border-radius: 36px;
+    background: #101828;
+    color: white;
+    box-shadow: var(--shadow);
+}
+
+.flight-summary-panel h1 {
+    font-size: clamp(2.2rem, 4vw, 4.8rem);
+}
+
+.booking-form {
+    display: grid;
+    gap: 20px;
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+    color: var(--muted);
+    font-weight: 800;
+    font-size: 0.82rem;
+}
+
+.seat-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.seat-dot.economy,
+.seat.economy {
+    background: #d1fae5;
+}
+
+.seat-dot.premium,
+.seat.premium {
+    background: #fde68a;
+}
+
+.seat-dot.business,
+.seat.business {
+    background: #ddd6fe;
+}
+
+.seat-dot.booked,
+.seat.booked {
+    background: #e2e8f0;
+}
+
+.seat-map {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(38px, 1fr));
+    gap: 10px;
+}
+
+.seat {
+    min-height: 46px;
+    border-radius: 14px 14px 20px 20px;
+    border: 2px solid transparent;
+    font-weight: 900;
+    cursor: pointer;
+    color: #0f172a;
+}
+
+.seat:hover:not(:disabled),
+.seat.selected {
+    border-color: var(--blue);
+    box-shadow: 0 10px 24px rgba(38, 99, 255, 0.22);
+}
+
+.seat.booked {
+    cursor: not-allowed;
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.passenger-card {
+    display: grid;
+    gap: 15px;
+}
+
+.fare-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.split-layout {
+    grid-template-columns: 1fr 0.75fr;
+}
+
+.list-stack {
+    display: grid;
+    gap: 12px;
+}
+
+.agent-row,
+.recent-pnr {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: white;
+    font-weight: 800;
+}
+
+.dark-panel {
+    background: #101828;
+    color: white;
+}
+
+.dark-panel p,
+.dark-panel span {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.recent-pnr {
+    display: grid;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+    margin-bottom: 10px;
+}
+
+.track-hero {
+    min-height: 60vh;
+    display: grid;
+    place-items: center;
+}
+
+.track-card {
+    max-width: 720px;
+    padding: 34px;
+}
+
+.track-card h1 {
+    font-size: clamp(2rem, 4vw, 4.3rem);
+}
+
+.track-form,
+.chat-form {
+    display: flex;
+    gap: 12px;
+}
+
+.status-board {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 22px;
+}
+
+.status-tile strong {
+    font-size: 1.35rem;
+    line-height: 1.12;
+    margin: 10px 0;
+}
+
+.status-tile.accent {
+    background: linear-gradient(135deg, #101828, #164e63);
+    color: white;
+}
+
+.action-panel h2 {
+    margin-bottom: 14px;
+}
+
+.chat-shell {
+    grid-template-columns: 0.7fr 1fr;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.chat-intro h1 {
+    font-size: clamp(2.3rem, 5vw, 5rem);
+}
+
+.chat-panel {
+    padding: 22px;
+}
+
+.chat-window {
+    display: grid;
+    gap: 12px;
+    min-height: 430px;
+    align-content: end;
+    margin-bottom: 16px;
+    padding: 18px;
+    border-radius: 24px;
+    background: #101828;
+}
+
+.bubble {
+    max-width: 82%;
+    padding: 13px 15px;
+    border-radius: 20px;
+    line-height: 1.5;
+    font-weight: 700;
+}
+
+.bubble.bot {
+    background: #e0f2fe;
+    justify-self: start;
+}
+
+.bubble.user {
+    background: #fef3c7;
+    justify-self: end;
+}
+
+.flash-wrap {
+    width: min(1180px, calc(100% - 32px));
+    margin: 18px auto 0;
+}
+
+.flash {
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: white;
+    border: 1px solid var(--line);
+    font-weight: 800;
+}
+
+.flash.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.flash.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.empty-state {
+    padding: 40px;
+    border-radius: 28px;
+    background: white;
+    color: var(--muted);
+    font-weight: 800;
+}
+
+@media (max-width: 860px) {
+    .hero,
+    .booking-shell,
+    .chat-shell,
+    .split-layout,
+    .tool-strip,
+    .status-board {
+        grid-template-columns: 1fr;
+    }
+
+    .search-panel,
+    .flight-meta,
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .navlinks {
+        flex-wrap: wrap;
+    }
+
+    .flight-summary-panel {
+        position: static;
+    }
+
+    .track-form,
+    .chat-form {
+        flex-direction: column;
+    }
+}
