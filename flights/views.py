@@ -2,7 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -15,11 +15,6 @@ from seats.models import Seat
 
 from .models import Aircraft, City, Flight
 from .seed import create_seats_for_flight, ensure_seed_data
-
-
-def staff_required(user):
-    return user.is_authenticated and user.is_staff
-
 
 def home(request):
     ensure_seed_data()
@@ -136,9 +131,11 @@ def flight_detail(request, flight_id):
 
 
 @login_required
-@user_passes_test(staff_required)
 def control_tower(request):
     ensure_seed_data()
+    if not request.user.is_staff:
+        messages.error(request, 'Only admin can access Control Tower.')
+        return redirect('home')
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'add_city':

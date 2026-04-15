@@ -1,18 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;600;700;800&display=swap');
 
 :root {
-    --ink: #e5eefb;
-    --muted: #8ea3bf;
-    --line: rgba(148, 163, 184, 0.22);
-    --panel: rgba(10, 20, 38, 0.78);
-    --panel-soft: rgba(16, 32, 57, 0.68);
-    --blue: #38bdf8;
-    --teal: #2dd4bf;
-    --amber: #fbbf24;
-    --violet: #a78bfa;
-    --rose: #fb7185;
-    --green: #34d399;
-    --shadow: 0 28px 90px rgba(0, 0, 0, 0.32);
+    --ink: #10233f;
+    --muted: #5f7393;
+    --line: #d9e5f5;
+    --panel: #ffffff;
+    --blue: #0b63ce;
+    --blue-2: #1683ff;
+    --blue-soft: #eaf4ff;
+    --sky: #f6fbff;
+    --green: #13a86b;
+    --amber: #f59e0b;
+    --rose: #e5484d;
+    --violet: #6f5bdc;
+    --shadow: 0 18px 55px rgba(15, 75, 145, 0.12);
 }
 
 * {
@@ -24,10 +25,9 @@ body {
     font-family: Inter, system-ui, sans-serif;
     color: var(--ink);
     background:
-        radial-gradient(circle at 12% 12%, rgba(56, 189, 248, 0.26), transparent 28rem),
-        radial-gradient(circle at 86% 8%, rgba(167, 139, 250, 0.22), transparent 30rem),
-        radial-gradient(circle at 50% 100%, rgba(45, 212, 191, 0.18), transparent 26rem),
-        linear-gradient(135deg, #050816 0%, #071527 45%, #111827 100%);
+        radial-gradient(circle at 8% 0%, rgba(22, 131, 255, 0.14), transparent 28rem),
+        radial-gradient(circle at 92% 12%, rgba(11, 99, 206, 0.12), transparent 30rem),
+        linear-gradient(180deg, #f8fbff 0%, #edf6ff 52%, #ffffff 100%);
     min-height: 100vh;
 }
 
@@ -36,12 +36,11 @@ body::before {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.18;
     background-image:
-        linear-gradient(rgba(148, 163, 184, 0.16) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.16) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: linear-gradient(to bottom, black, transparent 75%);
+        linear-gradient(rgba(11, 99, 206, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11, 99, 206, 0.055) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: linear-gradient(to bottom, black, transparent 70%);
 }
 
 a {
@@ -63,10 +62,11 @@ main {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    padding: 16px max(18px, calc((100vw - 1220px) / 2));
-    background: rgba(5, 8, 22, 0.76);
-    backdrop-filter: blur(20px);
+    padding: 14px max(18px, calc((100vw - 1220px) / 2));
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(18px);
     border-bottom: 1px solid var(--line);
+    box-shadow: 0 8px 30px rgba(15, 75, 145, 0.06);
 }
 
 .brand,
@@ -78,9 +78,10 @@ main {
 
 .brand {
     font-family: "Space Grotesk", Inter, sans-serif;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: -0.04em;
     font-size: 1.25rem;
+    color: #073b7a;
 }
 
 .brand-mark {
@@ -88,10 +89,10 @@ main {
     place-items: center;
     width: 44px;
     height: 44px;
-    border-radius: 15px;
-    color: #04111f;
-    background: conic-gradient(from 130deg, var(--blue), var(--teal), var(--amber), var(--blue));
-    box-shadow: 0 0 35px rgba(56, 189, 248, 0.42);
+    border-radius: 14px;
+    color: white;
+    background: linear-gradient(135deg, var(--blue), var(--blue-2));
+    box-shadow: 0 12px 26px rgba(11, 99, 206, 0.25);
 }
 
 .navlinks {
@@ -99,19 +100,28 @@ main {
     justify-content: flex-end;
 }
 
-.navlinks a {
+.navlinks a,
+.nav-user,
+.nav-login {
     padding: 9px 12px;
     border-radius: 999px;
-    color: #cbd5e1;
+    color: #24466f;
     font-weight: 800;
     font-size: 0.84rem;
     border: 1px solid transparent;
 }
 
-.navlinks a:hover {
-    border-color: var(--line);
-    background: rgba(148, 163, 184, 0.1);
-    color: white;
+.navlinks a:hover,
+.nav-login {
+    border-color: #bdd7f8;
+    background: var(--blue-soft);
+    color: var(--blue);
+}
+
+.nav-user {
+    border-color: #bdd7f8;
+    background: #fff;
+    color: #0b63ce;
 }
 
 .hero,
@@ -130,9 +140,9 @@ main {
 
 .eyebrow {
     margin: 0 0 12px;
-    color: var(--teal);
+    color: var(--blue);
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     font-size: 0.72rem;
     font-weight: 900;
 }
@@ -148,12 +158,13 @@ h1,
 h2,
 h3 {
     font-family: "Space Grotesk", Inter, sans-serif;
+    color: #082247;
 }
 
 h1 {
-    font-size: clamp(2.5rem, 6vw, 5.7rem);
-    line-height: 0.92;
-    letter-spacing: -0.08em;
+    font-size: clamp(2.35rem, 5.4vw, 5.4rem);
+    line-height: 0.95;
+    letter-spacing: -0.075em;
     margin-bottom: 20px;
 }
 
@@ -181,7 +192,7 @@ h2 {
 
 .btn {
     border: 0;
-    border-radius: 16px;
+    border-radius: 14px;
     padding: 13px 18px;
     font-weight: 900;
     cursor: pointer;
@@ -196,16 +207,16 @@ h2 {
 }
 
 .btn.primary {
-    color: #04111f;
-    background: linear-gradient(135deg, var(--blue), var(--teal));
-    box-shadow: 0 16px 45px rgba(45, 212, 191, 0.22);
+    color: white;
+    background: linear-gradient(135deg, var(--blue), var(--blue-2));
+    box-shadow: 0 16px 35px rgba(11, 99, 206, 0.22);
 }
 
 .btn.ghost,
 .btn.full:not(.primary) {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--line);
-    color: var(--ink);
+    background: #ffffff;
+    border: 1px solid #bdd7f8;
+    color: var(--blue);
 }
 
 .btn.full {
@@ -219,9 +230,9 @@ h2 {
 .status-tile,
 .track-card,
 .chat-panel {
-    background: var(--panel);
+    background: rgba(255, 255, 255, 0.94);
     border: 1px solid var(--line);
-    border-radius: 32px;
+    border-radius: 28px;
     box-shadow: var(--shadow);
 }
 
@@ -230,9 +241,10 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: end;
-    min-height: 380px;
+    min-height: 360px;
     position: relative;
     overflow: hidden;
+    background: linear-gradient(145deg, #ffffff, #e9f5ff);
 }
 
 .hero-card::before,
@@ -244,7 +256,7 @@ h2 {
     right: -70px;
     top: -70px;
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(56, 189, 248, 0.42), transparent 64%);
+    background: radial-gradient(circle, rgba(22, 131, 255, 0.24), transparent 64%);
 }
 
 .hero-card span,
@@ -255,8 +267,9 @@ h2 {
 
 .hero-card strong {
     position: relative;
+    color: #073b7a;
     font-size: 2rem;
-    line-height: 1.02;
+    line-height: 1.04;
     margin: 10px 0 16px;
 }
 
@@ -278,31 +291,38 @@ h2 {
 .search-panel {
     grid-template-columns: repeat(4, 1fr);
     padding: 14px;
-    background: rgba(10, 20, 38, 0.72);
-    border-radius: 24px;
+    background: #ffffff;
+    border-radius: 22px;
     border: 1px solid var(--line);
+    box-shadow: var(--shadow);
 }
 
 input,
 select {
     width: 100%;
-    border: 1px solid var(--line);
-    border-radius: 14px;
+    border: 1px solid #c9dcf4;
+    border-radius: 12px;
     padding: 13px 14px;
-    background: rgba(2, 6, 23, 0.7);
+    background: #ffffff;
     color: var(--ink);
     font: inherit;
     outline: none;
 }
 
+input:focus,
+select:focus {
+    border-color: var(--blue-2);
+    box-shadow: 0 0 0 4px rgba(22, 131, 255, 0.12);
+}
+
 input::placeholder {
-    color: #64748b;
+    color: #8aa0bd;
 }
 
 label {
     display: grid;
     gap: 8px;
-    color: #cbd5e1;
+    color: #24466f;
     font-weight: 900;
     font-size: 0.9rem;
 }
@@ -313,9 +333,9 @@ label {
 
 .coupon-stack span,
 .pill-cloud span {
-    background: rgba(45, 212, 191, 0.1);
-    color: #ccfbf1;
-    border: 1px solid rgba(45, 212, 191, 0.28);
+    background: #eef6ff;
+    color: #0b63ce;
+    border: 1px solid #bdd7f8;
     border-radius: 999px;
     padding: 9px 13px;
     font-size: 0.82rem;
@@ -332,10 +352,25 @@ label {
     font-size: clamp(2rem, 4vw, 4.2rem);
 }
 
-.flight-grid {
+.flight-grid,
+.booking-list-grid,
+.login-grid,
+.coupon-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
     gap: 22px;
+}
+
+.flight-grid {
+    grid-template-columns: repeat(auto-fit, minmax(295px, 1fr));
+}
+
+.booking-list-grid,
+.login-grid {
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+}
+
+.coupon-grid {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 
 .flight-card,
@@ -355,7 +390,7 @@ label {
     position: absolute;
     inset: auto 18px 16px 18px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(11, 99, 206, 0.35), transparent);
 }
 
 .card-topline {
@@ -369,26 +404,27 @@ label {
 .flight-no {
     font-family: "Space Grotesk", Inter, sans-serif;
     font-weight: 900;
+    color: #073b7a;
     letter-spacing: -0.04em;
 }
 
 .status {
     padding: 8px 10px;
     border-radius: 999px;
-    background: rgba(52, 211, 153, 0.14);
-    color: #86efac;
+    background: #e6f8ef;
+    color: #08794f;
     font-size: 0.7rem;
     font-weight: 900;
 }
 
 .status.delayed {
-    background: rgba(251, 191, 36, 0.16);
-    color: #fde68a;
+    background: #fff4d6;
+    color: #9a5b00;
 }
 
 .status.cancelled {
-    background: rgba(251, 113, 133, 0.18);
-    color: #fecdd3;
+    background: #ffe7e7;
+    color: #ad1f29;
 }
 
 .flight-card h3 {
@@ -410,9 +446,9 @@ label {
 
 .delay-note.large {
     padding: 16px;
-    border-radius: 20px;
-    background: rgba(45, 212, 191, 0.1);
-    color: #99f6e4;
+    border-radius: 18px;
+    background: #eef6ff;
+    color: #0b63ce;
     font-weight: 900;
 }
 
@@ -427,15 +463,16 @@ label {
 .fare-box {
     padding: 14px;
     border: 1px solid var(--line);
-    border-radius: 18px;
-    background: rgba(2, 6, 23, 0.4);
+    border-radius: 16px;
+    background: #f7fbff;
 }
 
 small,
 .flight-meta small,
 .summary-grid small,
 .fare-box span,
-.status-tile span {
+.status-tile span,
+.credential-card span {
     display: block;
     color: var(--muted);
     font-size: 0.72rem;
@@ -451,7 +488,7 @@ strong {
 .load-meter {
     height: 8px;
     border-radius: 999px;
-    background: rgba(148, 163, 184, 0.14);
+    background: #dbeafe;
     overflow: hidden;
     margin-bottom: 14px;
 }
@@ -460,7 +497,7 @@ strong {
     display: block;
     height: 100%;
     border-radius: 999px;
-    background: linear-gradient(90deg, var(--teal), var(--amber));
+    background: linear-gradient(90deg, var(--blue), var(--blue-2));
 }
 
 .flight-summary-panel {
@@ -468,8 +505,8 @@ strong {
     top: 92px;
     align-self: start;
     padding: 30px;
-    border-radius: 36px;
-    background: linear-gradient(145deg, rgba(8, 15, 31, 0.96), rgba(14, 47, 68, 0.84));
+    border-radius: 30px;
+    background: linear-gradient(145deg, #ffffff, #eaf4ff);
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
 }
@@ -478,9 +515,18 @@ strong {
     font-size: clamp(2.2rem, 4vw, 4.8rem);
 }
 
-.booking-form {
+.booking-form,
+.passenger-card,
+.list-stack,
+.timeline,
+.login-shell,
+.bot-booking-panel,
+.login-panel,
+.credential-panel,
+.booking-ticket,
+.control-card {
     display: grid;
-    gap: 20px;
+    gap: 15px;
 }
 
 .legend {
@@ -503,22 +549,22 @@ strong {
 
 .seat-dot.economy,
 .seat.economy {
-    background: linear-gradient(135deg, #064e3b, #34d399);
+    background: linear-gradient(135deg, #c9f5df, #13a86b);
 }
 
 .seat-dot.premium,
 .seat.premium {
-    background: linear-gradient(135deg, #78350f, #fbbf24);
+    background: linear-gradient(135deg, #fff0b8, #f59e0b);
 }
 
 .seat-dot.business,
 .seat.business {
-    background: linear-gradient(135deg, #4c1d95, #a78bfa);
+    background: linear-gradient(135deg, #dcd7ff, #6f5bdc);
 }
 
 .seat-dot.booked,
 .seat.booked {
-    background: #334155;
+    background: #d5dee9;
 }
 
 .seat-map {
@@ -533,24 +579,19 @@ strong {
     border: 2px solid transparent;
     font-weight: 900;
     cursor: pointer;
-    color: white;
+    color: #082247;
 }
 
 .seat:hover:not(:disabled),
 .seat.selected {
-    border-color: white;
-    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18), 0 14px 34px rgba(56, 189, 248, 0.24);
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(22, 131, 255, 0.14), 0 14px 34px rgba(11, 99, 206, 0.14);
 }
 
 .seat.booked {
     cursor: not-allowed;
-    color: #94a3b8;
+    color: #6f8098;
     text-decoration: line-through;
-}
-
-.passenger-card {
-    display: grid;
-    gap: 15px;
 }
 
 .fare-box {
@@ -563,40 +604,30 @@ strong {
     grid-template-columns: 1fr 0.75fr;
 }
 
-.list-stack,
-.timeline {
-    display: grid;
-    gap: 12px;
-}
-
 .agent-row,
 .recent-pnr,
 .timeline-item,
-.coupon-card {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
+.coupon-card,
+.credential-card {
+    display: grid;
+    gap: 8px;
     padding: 16px;
     border: 1px solid var(--line);
     border-radius: 18px;
-    background: rgba(2, 6, 23, 0.45);
+    background: #f7fbff;
     font-weight: 900;
 }
 
-.dark-panel {
-    background: linear-gradient(145deg, rgba(8, 15, 31, 0.96), rgba(49, 20, 80, 0.72));
+.dark-panel,
+.delay-console {
+    background: linear-gradient(145deg, #ffffff, #eaf4ff);
 }
 
 .dark-panel p,
-.dark-panel span {
+.dark-panel span,
+.timeline-item span,
+.coupon-card span {
     color: var(--muted);
-}
-
-.recent-pnr,
-.timeline-item,
-.coupon-card {
-    display: grid;
-    margin-bottom: 10px;
 }
 
 .track-hero {
@@ -632,17 +663,18 @@ strong {
 }
 
 .status-tile.accent {
-    background: linear-gradient(135deg, rgba(45, 212, 191, 0.22), rgba(56, 189, 248, 0.16));
-}
-
-.action-panel h2 {
-    margin-bottom: 14px;
+    background: linear-gradient(135deg, #ffffff, #e6f2ff);
 }
 
 .chat-shell {
     grid-template-columns: 0.7fr 1fr;
     align-items: center;
     min-height: 70vh;
+}
+
+.chatbot-booking-shell {
+    min-height: auto;
+    margin-bottom: 24px;
 }
 
 .chat-intro h1 {
@@ -660,28 +692,30 @@ strong {
     align-content: end;
     margin-bottom: 16px;
     padding: 18px;
-    border-radius: 24px;
-    background: rgba(2, 6, 23, 0.72);
+    border-radius: 22px;
+    background: #f4f9ff;
     border: 1px solid var(--line);
 }
 
 .bubble {
     max-width: 82%;
     padding: 13px 15px;
-    border-radius: 20px;
+    border-radius: 18px;
     line-height: 1.5;
     font-weight: 800;
 }
 
 .bubble.bot {
-    background: rgba(56, 189, 248, 0.16);
-    border: 1px solid rgba(56, 189, 248, 0.28);
+    background: #e5f2ff;
+    border: 1px solid #bdd7f8;
+    color: #0a3e80;
     justify-self: start;
 }
 
 .bubble.user {
-    background: rgba(251, 191, 36, 0.16);
-    border: 1px solid rgba(251, 191, 36, 0.26);
+    background: #ffffff;
+    border: 1px solid #bdd7f8;
+    color: var(--ink);
     justify-self: end;
 }
 
@@ -692,46 +726,45 @@ strong {
 
 .flash {
     padding: 14px 16px;
-    border-radius: 16px;
-    background: rgba(10, 20, 38, 0.92);
+    border-radius: 14px;
+    background: #ffffff;
     border: 1px solid var(--line);
+    color: var(--ink);
     font-weight: 900;
+    box-shadow: var(--shadow);
 }
 
 .flash.success {
-    border-color: rgba(52, 211, 153, 0.32);
-    color: #bbf7d0;
+    border-color: #b8ebd2;
+    background: #f0fff7;
+    color: #08794f;
 }
 
 .flash.error {
-    border-color: rgba(251, 113, 133, 0.36);
-    color: #fecdd3;
+    border-color: #ffc9c9;
+    background: #fff4f4;
+    color: #ad1f29;
 }
 
 .empty-state {
     padding: 40px;
-    border-radius: 28px;
+    border-radius: 24px;
     background: var(--panel);
     color: var(--muted);
     font-weight: 900;
+    border: 1px solid var(--line);
 }
 
 .dashboard-board .status-tile strong {
     font-size: 2rem;
 }
 
-.timeline-item span,
-.coupon-card span {
-    color: var(--muted);
-    font-weight: 800;
-}
-
 .mini-stat {
     margin-top: 18px;
     padding: 14px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.08);
-    color: white;
+    border-radius: 16px;
+    background: #eaf4ff;
+    color: #073b7a;
     font-weight: 900;
 }
 
@@ -740,11 +773,6 @@ strong {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
     margin-bottom: 24px;
-}
-
-.control-card {
-    display: grid;
-    gap: 14px;
 }
 
 .wide-card {
@@ -757,7 +785,9 @@ strong {
     gap: 14px;
 }
 
-.control-lists {
+.control-lists,
+.coupon-console,
+.bot-booking-form {
     margin-top: 20px;
 }
 
@@ -765,81 +795,6 @@ strong {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-}
-
-.coupon-console {
-    margin-top: 24px;
-}
-
-.coupon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 14px;
-}
-
-.nav-user,
-.nav-login {
-    border: 1px solid rgba(45, 212, 191, 0.28);
-    background: rgba(45, 212, 191, 0.1);
-    color: #ccfbf1;
-    border-radius: 999px;
-    padding: 9px 12px;
-    font-weight: 900;
-    font-size: 0.84rem;
-}
-
-.login-shell,
-.bot-booking-panel {
-    display: grid;
-    gap: 22px;
-}
-
-.login-grid,
-.booking-list-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-    gap: 22px;
-}
-
-.login-panel,
-.credential-panel,
-.booking-ticket {
-    display: grid;
-    gap: 16px;
-}
-
-.credential-card {
-    padding: 18px;
-    border-radius: 22px;
-    border: 1px solid var(--line);
-    background: rgba(2, 6, 23, 0.45);
-}
-
-.credential-card span {
-    display: block;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.72rem;
-    font-weight: 900;
-}
-
-.credential-card strong {
-    font-size: 1.45rem;
-    margin: 6px 0;
-}
-
-.chatbot-booking-shell {
-    min-height: auto;
-    margin-bottom: 24px;
-}
-
-.bot-booking-form {
-    margin-top: 16px;
-}
-
-.delay-console {
-    background: linear-gradient(145deg, rgba(62, 36, 8, 0.82), rgba(15, 23, 42, 0.86));
 }
 
 @media (max-width: 900px) {

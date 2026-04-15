@@ -21,10 +21,12 @@ Django 4.2 airline management and reservation mini-project for a lab demo. The D
 - **Demo logins**:
   - Sample passenger: `sample_user` / `user12345`
   - Admin: `admin` / `admin12345`
+- **UI theme**: Professional white-and-blue airline theme in `reservations/static/reservations/styles.css`.
+- **Access rule**: Control Tower at `/control-tower/` is admin/staff only. Anonymous users are sent to login; normal logged-in users are redirected home with an access message.
 - **Key features**:
   - Flight listing and city/route search
   - User login and personal My Bookings page
-  - Admin-only Control Tower at `/control-tower/` for adding cities, coupons, flights with generated seat maps, sample bookings, and delay messages
+  - Admin-only Control Tower for adding cities, coupons, flights with generated seat maps, sample bookings, and delay messages
   - Dynamic fare calculation through booking signals
   - Visual seat selection with economy, premium, and business pricing
   - Passenger and agent-assisted booking flows
@@ -42,6 +44,18 @@ Django 4.2 airline management and reservation mini-project for a lab demo. The D
 - `python manage.py migrate && python manage.py runserver 0.0.0.0:5000` — run the Django app in Replit
 - `python manage.py runserver 127.0.0.1:8080` — recommended local Windows command if port 8000 is blocked
 - `python manage.py createsuperuser` — optional Django admin user
+
+## Localhost Login Guide
+
+1. Apply migrations: `python manage.py migrate`
+2. Start local server: `python manage.py runserver 127.0.0.1:8080`
+3. Open the app: `http://127.0.0.1:8080/`
+4. Open app login: `http://127.0.0.1:8080/account/login/`
+5. Open Django Admin: `http://127.0.0.1:8080/admin/`
+6. Use seeded admin login: `admin` / `admin12345`
+7. Use seeded passenger login: `sample_user` / `user12345`
+
+To create another admin user locally, run `python manage.py createsuperuser` and follow the prompts.
 
 ## Original Workspace Stack
 
