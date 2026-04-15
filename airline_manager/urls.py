@@ -7,6 +7,7 @@ admin.site.index_title = 'Airline Operations Dashboard'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('account/', include('accounts.urls')),
     path('', include('flights.urls')),
     path('agent/', include('agents.urls')),
     path('track/', include('tracking.urls')),

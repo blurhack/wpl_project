@@ -2,9 +2,9 @@
 {% block title %}Control Tower{% endblock %}
 {% block content %}
 <section class="page-intro compact control-heading">
-    <p class="eyebrow">Control Tower</p>
-    <h1>Add live data without editing code.</h1>
-    <p>This is the custom admin-style panel for lab demo operations. Add cities, create new flights with full seat maps, publish coupons, and generate sample bookings.</p>
+    <p class="eyebrow">Admin Control Tower</p>
+    <h1>Operations tools only admin can access.</h1>
+    <p>Add airports, create flights, publish coupons, generate bookings, and send delay communication that passengers see in My Bookings and Live Tracking.</p>
 </section>
 
 <section class="control-grid">
@@ -17,7 +17,7 @@
         <label>Airport Code<input name="airport_code" placeholder="AMD" maxlength="6" required></label>
         <label>Airport Name<input name="airport_name" placeholder="Sardar Vallabhbhai Patel International Airport" required></label>
         <label>Country<input name="country" value="India" required></label>
-        <button class="btn primary full" type="submit">Save City</button>
+        <button class="btn primary full" type="submit">Save Airport</button>
     </form>
 
     <form method="post" class="panel control-card">
@@ -52,6 +52,23 @@
         <button class="btn primary full" type="submit">Launch Flight</button>
     </form>
 
+    <form method="post" class="panel control-card wide-card delay-console">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delay_update">
+        <p class="eyebrow">Passenger Communication</p>
+        <h2>Update Flight Delay Message</h2>
+        <div class="form-grid-two">
+            <label>Flight<select name="flight_id">{% for flight in flights %}<option value="{{ flight.id }}">{{ flight.flight_no }} · {{ flight.origin }} to {{ flight.destination }}</option>{% endfor %}</select></label>
+            <label>Status<select name="status">{% for value, label in statuses %}<option value="{{ value }}">{{ label }}</option>{% endfor %}</select></label>
+            <label>Delay Minutes<input name="delay_minutes" type="number" value="90" min="0"></label>
+            <label>Gate<input name="gate" value="A1"></label>
+            <label>Reason<input name="reason" value="Operational delay"></label>
+            <label>Support Type<select name="accommodation_type"><option value="MEAL">Meal Support</option><option value="HOTEL">Hotel Support</option><option value="REBOOK">Rebooking Support</option></select></label>
+        </div>
+        <label>Passenger Message<input name="message" value="Updated by admin: meal voucher and rebooking desk are active."></label>
+        <button class="btn primary full" type="submit">Send Delay Update</button>
+    </form>
+
     <form method="post" class="panel control-card">
         {% csrf_token %}
         <input type="hidden" name="action" value="sample_booking">
@@ -68,7 +85,7 @@
 
 <section class="split-layout control-lists">
     <div class="panel">
-        <h2>Current cities</h2>
+        <h2>Current airports</h2>
         <div class="pill-cloud">{% for city in cities %}<span>{{ city.name }} · {{ city.airport_code }}</span>{% endfor %}</div>
     </div>
     <div class="panel dark-panel">

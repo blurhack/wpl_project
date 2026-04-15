@@ -1,0 +1,30 @@
+{% extends 'reservations/base.html' %}
+{% block title %}My Bookings{% endblock %}
+{% block content %}
+<section class="page-intro compact">
+    <p class="eyebrow">Your Bookings</p>
+    <h1>Tickets, delay messages and tracking in one place.</h1>
+    <p>Passengers can see only their own bookings. Admin can see the full operations list.</p>
+</section>
+<section class="booking-list-grid">
+    {% for booking in bookings %}
+        <article class="panel booking-ticket">
+            <div class="card-topline">
+                <span class="flight-no">PNR {{ booking.pnr }}</span>
+                <span class="status {{ booking.flight.status|lower }}">{{ booking.flight.get_status_display }}</span>
+            </div>
+            <h2>{{ booking.flight.origin }} to {{ booking.flight.destination }}</h2>
+            <p class="airline">{{ booking.flight.flight_no }} · Seat {{ booking.seat.code }} · Gate {{ booking.flight.gate }} · ₹{{ booking.total_amount }}</p>
+            <div class="summary-grid">
+                <div><small>Passenger</small><strong>{{ booking.passenger_name }}</strong></div>
+                <div><small>Check-in</small><strong>{% if booking.checked_in %}Done{% else %}Pending{% endif %}</strong></div>
+                <div><small>Documents</small><strong>{{ booking.get_document_status_display }}</strong></div>
+            </div>
+            <p class="delay-note large">Admin delay message: {{ booking.flight.delay_support }}</p>
+            <a class="btn primary full" href="{% url 'track_booking' booking.pnr %}">Open Live Tracking</a>
+        </article>
+    {% empty %}
+        <div class="empty-state">No bookings yet. Open the flight board or ask AeroBot to book a ticket.</div>
+    {% endfor %}
+</section>
+{% endblock %}

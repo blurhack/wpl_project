@@ -2,6 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -14,6 +15,10 @@ from seats.models import Seat
 
 from .models import Aircraft, City, Flight
 from .seed import create_seats_for_flight, ensure_seed_data
+
+
+def staff_required(user):
+    return user.is_authenticated and user.is_staff
 
 
 def home(request):
@@ -64,6 +69,9 @@ def flight_detail(request, flight_id):
     mode = request.GET.get('mode', 'USER')
 
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, 'Please login as sample_user before booking a ticket.')
+            return redirect('login')
         seat_id = request.POST.get('seat_id')
         passenger_name = request.POST.get('passenger_name', '').strip()
         email = request.POST.get('email', '').strip()
@@ -94,6 +102,8 @@ def flight_detail(request, flight_id):
         )
         passenger.full_name = passenger_name
         passenger.phone = phone
+        if request.user.is_authenticated and not request.user.is_staff:
+            passenger.user = request.user
         passenger.save()
 
         agent = None
@@ -125,6 +135,8 @@ def flight_detail(request, flight_id):
     })
 
 
+@login_required
+@user_passes_test(staff_required)
 def control_tower(request):
     ensure_seed_data()
     if request.method == 'POST':
@@ -176,6 +188,28 @@ def control_tower(request):
             if flight.delay_minutes:
                 DelayAlert.objects.create(flight=flight, delay_minutes=flight.delay_minutes, reason='Control Tower update', accommodation_type='MEAL' if flight.delay_minutes < 180 else 'HOTEL', message=flight.delay_support)
             messages.success(request, f'Flight {flight.flight_no} created with full seat map.')
+        elif action == 'delay_update':
+            flight = get_object_or_404(Flight, id=request.POST.get('flight_id'))
+            flight.status = request.POST.get('status', flight.status)
+            flight.delay_minutes = int(request.POST.get('delay_minutes', flight.delay_minutes) or '0')
+            flight.gate = request.POST.get('gate', flight.gate).strip().upper()
+            flight.checkin_open = flight.status in ['CHECKIN', 'BOARDING', 'DELAYED']
+            flight.save()
+            message = request.POST.get('message', '').strip() or flight.delay_support
+            DelayAlert.objects.update_or_create(
+                flight=flight,
+                active=True,
+                defaults={
+                    'delay_minutes': flight.delay_minutes,
+                    'reason': request.POST.get('reason', 'Admin operations update').strip() or 'Admin operations update',
+                    'accommodation_type': request.POST.get('accommodation_type', 'MEAL'),
+                    'message': message,
+                },
+            )
+            for booking in flight.bookings.filter(status='CONFIRMED'):
+                booking.accommodation_note = message
+                booking.save()
+            messages.success(request, f'Delay communication updated for {flight.flight_no}. Passengers can see it in My Bookings and tracking.')
         elif action == 'sample_booking':
             flight = get_object_or_404(Flight, id=request.POST.get('flight_id'))
             booked_ids = Booking.objects.filter(flight=flight, status='CONFIRMED').values_list('seat_id', flat=True)

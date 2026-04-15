@@ -4,11 +4,12 @@
 <section class="track-hero">
     <div class="panel track-card">
         <p class="eyebrow">Live Tracking</p>
-        <h1>Enter your PNR to view check-in, document check, gate and delay support.</h1>
+        <h1>Track your PNR or check a flight number.</h1>
+        <p class="muted-copy">Enter a local PNR to view AeroMitra C&D, check-in, gate and delay communication. If you enter a flight number and Aviationstack is configured, the app redirects to live Aviationstack data.</p>
         <form method="post" class="track-form">
             {% csrf_token %}
-            <input name="pnr" placeholder="Example: AB12CD" required>
-            <button class="btn primary" type="submit">Track Booking</button>
+            <input name="pnr" placeholder="PNR like ABC123 or flight no like AI202" required>
+            <button class="btn primary" type="submit">Track Now</button>
         </form>
     </div>
 </section>

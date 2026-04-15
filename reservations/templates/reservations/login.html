@@ -1,0 +1,26 @@
+{% extends 'reservations/base.html' %}
+{% block title %}Login · AeroMitra{% endblock %}
+{% block content %}
+<section class="login-shell">
+    <div class="page-intro compact">
+        <p class="eyebrow">Two Demo Logins</p>
+        <h1>Login as passenger or admin.</h1>
+        <p>Use the sample user to book tickets and see personal bookings. Use admin to manage flights, airports, coupons and delay communication.</p>
+    </div>
+    <div class="login-grid">
+        <form method="post" class="panel login-panel">
+            {% csrf_token %}
+            <h2>Sign in</h2>
+            <label>Username<input name="username" autocomplete="username" required></label>
+            <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+            <button class="btn primary full" type="submit">Login</button>
+        </form>
+        <div class="panel credential-panel">
+            <p class="eyebrow">Ready-made accounts</p>
+            <div class="credential-card"><span>Sample User</span><strong>sample_user</strong><small>Password: user12345</small></div>
+            <div class="credential-card"><span>Admin</span><strong>admin</strong><small>Password: admin12345</small></div>
+            <p class="muted-copy">Admin-only links appear after admin login. Passenger accounts only see booking, tracking, chatbot and personal tickets.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

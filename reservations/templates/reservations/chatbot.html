@@ -1,11 +1,11 @@
 {% extends 'reservations/base.html' %}
-{% block title %}Coupon Bot{% endblock %}
+{% block title %}AeroBot Booking Assistant{% endblock %}
 {% block content %}
-<section class="chat-shell">
+<section class="chat-shell chatbot-booking-shell">
     <div class="chat-intro">
-        <p class="eyebrow">Coupon Chatbot</p>
-        <h1>AeroBot answers booking questions instantly.</h1>
-        <p>Ask about coupons, delay accommodation, seats, agent booking, or check-in/document checks.</p>
+        <p class="eyebrow">AeroBot Assistant</p>
+        <h1>Ask questions or book a ticket from chat.</h1>
+        <p>AeroBot can answer coupon, delay, seat, check-in and admin questions. It can also create a real booking with a PNR using the quick booking form.</p>
     </div>
     <div class="chat-panel">
         <div class="chat-window">
@@ -15,9 +15,28 @@
         </div>
         <form method="post" class="chat-form">
             {% csrf_token %}
-            <input name="message" placeholder="Ask: Which coupon can I use?" autocomplete="off" required>
+            <input type="hidden" name="action" value="chat">
+            <input name="message" placeholder="Ask: book ticket, coupon, delay, check-in" autocomplete="off" required>
             <button class="btn primary" type="submit">Send</button>
         </form>
     </div>
+</section>
+
+<section class="panel bot-booking-panel">
+    <div class="form-head">
+        <p class="eyebrow">AeroBot Ticket Desk</p>
+        <h2>Quick book a ticket</h2>
+        <p class="muted-copy">AeroBot will automatically choose the first free seat on the selected flight, apply the coupon if valid, create payment and tracking records, then redirect to the PNR page.</p>
+    </div>
+    <form method="post" class="form-grid-two bot-booking-form">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="book_ticket">
+        <label>Flight<select name="flight_id">{% for flight in flights %}<option value="{{ flight.id }}">{{ flight.flight_no }} · {{ flight.origin }} to {{ flight.destination }} · ₹{{ flight.dynamic_price }}</option>{% endfor %}</select></label>
+        <label>Coupon<select name="coupon_code"><option value="">No coupon</option>{% for coupon in coupons %}<option value="{{ coupon.code }}">{{ coupon.code }} · {{ coupon.description }}</option>{% endfor %}</select></label>
+        <label>Passenger Name<input name="passenger_name" value="{% if request.user.is_authenticated and not request.user.is_staff %}{{ request.user.first_name }} {{ request.user.last_name }}{% endif %}" placeholder="Full name" required></label>
+        <label>Email<input name="email" type="email" value="{% if request.user.is_authenticated %}{{ request.user.email }}{% endif %}" placeholder="name@example.com" required></label>
+        <label>Phone<input name="phone" placeholder="Mobile number" required></label>
+        <button class="btn primary full" type="submit">Book With AeroBot</button>
+    </form>
 </section>
 {% endblock %}

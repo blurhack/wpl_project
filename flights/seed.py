@@ -1,6 +1,7 @@
 from datetime import timedelta
 from decimal import Decimal
 
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 from accounts.models import Passenger
@@ -47,6 +48,28 @@ SAMPLE_PASSENGERS = [
 ]
 
 
+def seed_demo_users():
+    admin, _ = User.objects.get_or_create(username='admin', defaults={'email': 'admin@aeromitra.test', 'is_staff': True, 'is_superuser': True})
+    admin.is_staff = True
+    admin.is_superuser = True
+    admin.email = 'admin@aeromitra.test'
+    admin.set_password('admin12345')
+    admin.save()
+
+    sample_user, _ = User.objects.get_or_create(username='sample_user', defaults={'email': 'sample.user@aeromitra.test', 'first_name': 'Sample', 'last_name': 'Passenger'})
+    sample_user.is_staff = False
+    sample_user.is_superuser = False
+    sample_user.email = 'sample.user@aeromitra.test'
+    sample_user.set_password('user12345')
+    sample_user.save()
+
+    Passenger.objects.update_or_create(
+        email='sample.user@aeromitra.test',
+        defaults={'user': sample_user, 'full_name': 'Sample Passenger', 'phone': '9999900000', 'government_id': 'DEMOUSER123'},
+    )
+    return sample_user
+
+
 def seed_cities():
     for name, code, airport in CITY_DATA:
         City.objects.get_or_create(name=name, defaults={'airport_code': code, 'airport_name': airport})
@@ -76,12 +99,13 @@ def seed_agents():
 
 def seed_faqs():
     faqs = [
-        ('coupon', 'Which coupon can I use?', 'Try LAB10, FIRST500, AGENT7, SKYFEST, or DELAYCARE. Coupons are stored in the database and can be added from Control Tower or Django Admin.'),
-        ('delay', 'What happens if my flight is delayed?', 'After 90 minutes, meal support starts. After 180 minutes, hotel desk and free reschedule support are shown in tracking.'),
+        ('coupon', 'Which coupon can I use?', 'Try LAB10, FIRST500, AGENT7, SKYFEST, or DELAYCARE. Coupons are stored in the database and can be added from Control Tower by admin.'),
+        ('delay', 'What happens if my flight is delayed?', 'Admin delay communication appears in My Bookings and Live Tracking. After 90 minutes meal support starts; after 180 minutes hotel and reschedule support starts.'),
         ('seat', 'How does seat selection work?', 'Choose green seats for economy, amber for premium, and violet for business. The final price updates before booking.'),
         ('check', 'How do C&D checks work?', 'Open Live Tracking with your PNR, submit document check, then complete check-in when the flight allows it.'),
         ('agent', 'What is agent booking?', 'Agent booking mode lets a travel desk book on behalf of a passenger and stores the agent record on the ticket.'),
-        ('admin', 'Can I add flight and city data?', 'Yes. Use Control Tower for fast demo entry or Django Admin for full database management.'),
+        ('admin', 'Can I add flight and city data?', 'Only admin can access Control Tower to add airports, flights, coupons, sample bookings and delay messages.'),
+        ('book', 'Can you book a ticket?', 'Yes. Use the quick booking form on this chatbot page. Pick a flight, enter passenger details, choose a coupon and AeroBot will create the PNR.'),
     ]
     for keyword, question, answer in faqs:
         FAQEntry.objects.get_or_create(keyword=keyword, defaults={'question': question, 'answer': answer})
@@ -153,6 +177,7 @@ def seed_flights():
 
 
 def seed_sample_bookings():
+    sample_user = User.objects.filter(username='sample_user').first()
     flights = list(Flight.objects.all()[:6])
     coupons = list(Coupon.objects.filter(active=True))
     agents = list(Agent.objects.filter(active=True))
@@ -168,6 +193,9 @@ def seed_sample_bookings():
         if not seat:
             continue
         passenger, _ = Passenger.objects.get_or_create(email=email, defaults={'full_name': name, 'phone': phone})
+        if index == 0 and sample_user:
+            passenger.user = sample_user
+            passenger.save()
         mode = 'AGENT' if index % 3 == 0 else 'USER'
         agent = agents[index % len(agents)] if mode == 'AGENT' and agents else None
         Booking.objects.create(
@@ -184,9 +212,27 @@ def seed_sample_bookings():
             document_status='CLEARED' if index % 2 == 0 else 'SUBMITTED',
             checked_in=index % 2 == 0,
         )
+    if sample_user and not Booking.objects.filter(passenger__user=sample_user).exists():
+        flight = flights[0]
+        booked_ids = Booking.objects.filter(flight=flight, status='CONFIRMED').values_list('seat_id', flat=True)
+        seat = flight.seats.exclude(id__in=booked_ids).filter(is_blocked=False).first()
+        sample_passenger = Passenger.objects.filter(user=sample_user).first()
+        if seat and sample_passenger:
+            Booking.objects.create(
+                passenger=sample_passenger,
+                passenger_name=sample_passenger.full_name,
+                email=sample_passenger.email,
+                phone=sample_passenger.phone,
+                flight=flight,
+                seat=seat,
+                coupon=Coupon.objects.filter(code='LAB10', active=True).first(),
+                booking_mode='USER',
+                document_status='SUBMITTED',
+            )
 
 
 def ensure_seed_data():
+    seed_demo_users()
     seed_cities()
     seed_coupons()
     seed_agents()

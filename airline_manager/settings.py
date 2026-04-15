@@ -76,6 +76,9 @@ if DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3':
     }
 
 AUTH_PASSWORD_VALIDATORS = []
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'my_bookings'
+LOGOUT_REDIRECT_URL = 'home'
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
@@ -88,6 +91,7 @@ STATICFILES_DIRS = [BASE_DIR / 'reservations' / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 X_FRAME_OPTIONS = 'ALLOWALL'
+AVIATIONSTACK_ACCESS_KEY = os.environ.get('AVIATIONSTACK_ACCESS_KEY', '')
 
 CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')

@@ -777,6 +777,71 @@ strong {
     gap: 14px;
 }
 
+.nav-user,
+.nav-login {
+    border: 1px solid rgba(45, 212, 191, 0.28);
+    background: rgba(45, 212, 191, 0.1);
+    color: #ccfbf1;
+    border-radius: 999px;
+    padding: 9px 12px;
+    font-weight: 900;
+    font-size: 0.84rem;
+}
+
+.login-shell,
+.bot-booking-panel {
+    display: grid;
+    gap: 22px;
+}
+
+.login-grid,
+.booking-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 22px;
+}
+
+.login-panel,
+.credential-panel,
+.booking-ticket {
+    display: grid;
+    gap: 16px;
+}
+
+.credential-card {
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid var(--line);
+    background: rgba(2, 6, 23, 0.45);
+}
+
+.credential-card span {
+    display: block;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
+.credential-card strong {
+    font-size: 1.45rem;
+    margin: 6px 0;
+}
+
+.chatbot-booking-shell {
+    min-height: auto;
+    margin-bottom: 24px;
+}
+
+.bot-booking-form {
+    margin-top: 16px;
+}
+
+.delay-console {
+    background: linear-gradient(145deg, rgba(62, 36, 8, 0.82), rgba(15, 23, 42, 0.86));
+}
+
 @media (max-width: 900px) {
     .hero,
     .booking-shell,

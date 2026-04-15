@@ -15,13 +15,22 @@
             <span>AeroMitra</span>
         </a>
         <div class="navlinks">
-            <a href="{% url 'home' %}">Flights</a>
-            <a href="{% url 'dashboard' %}">Dashboard</a>
-            <a href="{% url 'control_tower' %}">Control Tower</a>
-            <a href="{% url 'agent_booking' %}">Agent Desk</a>
+            <a href="{% url 'home' %}">Book Flight</a>
+            <a href="{% url 'my_bookings' %}">My Bookings</a>
             <a href="{% url 'track_search' %}">Live Tracking</a>
-            <a href="{% url 'chatbot' %}">Coupon Bot</a>
-            <a href="/admin/">Django Admin</a>
+            <a href="{% url 'chatbot' %}">AeroBot</a>
+            {% if request.user.is_staff %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'control_tower' %}">Control Tower</a>
+                <a href="{% url 'agent_booking' %}">Agent Desk</a>
+                <a href="/admin/">Django Admin</a>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <span class="nav-user">{{ request.user.username }}</span>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a class="nav-login" href="{% url 'login' %}">Login</a>
+            {% endif %}
         </div>
     </nav>
 
